@@ -18,7 +18,7 @@ fn register_server_functions() {
 async fn router(env: Env) -> axum::Router {
     use std::sync::Arc;
 
-    use axum::{routing::post, Extension, Router};
+    use axum::{Extension, Router};
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
 
@@ -29,7 +29,6 @@ async fn router(env: Env) -> axum::Router {
 
     // build our application with a route
     Router::new()
-        .route("/api/*fn_name", post(leptos_axum::handle_server_fns))
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
