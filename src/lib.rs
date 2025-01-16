@@ -1,11 +1,18 @@
 #[cfg(feature = "ssr")]
 use worker::*;
 
-mod api;
 pub mod app;
-mod components;
+pub mod components;
 
 use crate::app::*;
+
+#[cfg(feature = "ssr")]
+fn register_server_functions() {
+    use leptos::server_fn::axum::register_explicit;
+
+    // Add all of your server functions here
+    register_explicit::<components::show_data_from_api::SayHello>();
+}
 
 #[cfg(feature = "ssr")]
 async fn router(env: Env) -> axum::Router {
@@ -14,8 +21,6 @@ async fn router(env: Env) -> axum::Router {
     use axum::{routing::post, Extension, Router};
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
-
-    use crate::api::register_server_functions;
 
     let conf = get_configuration(None).unwrap();
     let leptos_options = conf.leptos_options;
